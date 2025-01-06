@@ -120,15 +120,7 @@ cards.forEach((card) => {
                     case "Vedic Stories":
                         location.href = 'vedic stories.html'; // Adjust the path
                         break;
-                    
-                    
-                    
-                    
-                     
-
-
-                                    
-
+                
                     default:
                         console.log(`No action defined for ${option}`);
                 }
@@ -152,3 +144,63 @@ window.addEventListener('click', (e) => {
         dropdownModal.style.display = 'none';
     }
 });
+
+// Function to toggle the notification panel visibility
+document.getElementById('notification-button').addEventListener('click', function() {
+    const notificationPanel = document.querySelector('.notification-panel');
+    if (notificationPanel.style.display === 'none' || notificationPanel.style.display === '') {
+      notificationPanel.style.display = 'block'; // Show the panel
+      notificationPanel.style.animation = 'slideIn 0.5s ease-out'; // Apply slide-in animation
+    } else {
+      // Apply the slide-out animation before hiding the panel
+      notificationPanel.style.animation = 'slideOut 0.5s ease-out';
+      setTimeout(() => {
+        notificationPanel.style.display = 'none'; // Hide the panel after the animation completes
+      }, 500); // Match the duration of the animation
+    }
+  });
+  
+  // Function to add a notification dynamically
+  function addNotification(message, link) {
+    const notificationPanel = document.querySelector('.notification-panel');
+    const notification = document.createElement('div');
+    notification.classList.add('notification');
+    notification.innerHTML = `<p>${message} <a href="${link}" target="_blank">Click here</a> to learn more.</p>`;
+    notificationPanel.appendChild(notification);
+  }
+  
+    
+  // Function to ensure only 5 notifications are shown at a time
+  setInterval(() => {
+    const notifications = document.querySelectorAll('.notification');
+    if (notifications.length > 5) {
+      notifications[0].remove(); // Remove the first notification if there are more than 5
+    }
+  }, 1000); // Check every second
+  
+  // Make the notifications draggable
+  let isDragging = false;
+  let offsetX, offsetY;
+  
+  document.querySelectorAll('.notification').forEach(notification => {
+    notification.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      offsetX = e.clientX - notification.getBoundingClientRect().left;
+      offsetY = e.clientY - notification.getBoundingClientRect().top;
+      notification.style.cursor = 'grabbing';
+    });
+  
+    document.addEventListener('mousemove', (e) => {
+      if (isDragging) {
+        notification.style.position = 'absolute';
+        notification.style.left = `${e.clientX - offsetX}px`;
+        notification.style.top = `${e.clientY - offsetY}px`;
+      }
+    });
+  
+    document.addEventListener('mouseup', () => {
+      isDragging = false;
+      notification.style.cursor = 'grab';
+    });
+  });
+  
