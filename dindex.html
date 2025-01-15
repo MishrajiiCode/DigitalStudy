@@ -1,0 +1,46 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Text and Voice Assistant</title>
+    <link rel="stylesheet" href="dstyles.css">
+    
+</head>
+<body>
+    <div class="container">
+        <h1>AI Assistant for VedicScholars</h1>
+        <script async src="https://cse.google.com/cse.js?cx=c113fbd6860a243bf"></script>
+        <div class="gcse-search"></div>
+        <button onclick="startVoiceSearch()">🎤 Voice Search</button>
+        <textarea id="output" rows="5" style="width: 100%; margin-top: 1rem;" placeholder="Your voice input will appear here..."></textarea>
+    </div>
+    
+    <script>
+        // Voice Recognition for Search
+        function startVoiceSearch() {
+            const output = document.getElementById('output');
+            const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.lang = 'en-US';
+            recognition.start();
+
+            recognition.onresult = function (event) {
+                const transcript = event.results[0][0].transcript;
+                output.value = `Searching for: ${transcript}`;
+                performSearch(transcript); // Trigger search
+            };
+
+            recognition.onerror = function (event) {
+                output.value = 'Error occurred in recognition: ' + event.error;
+            };
+        }
+
+        // Perform Search Functionality
+        function performSearch(query) {
+            const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+            window.open(searchUrl, '_blank');
+        }
+    </script>
+</body>
+</html>
